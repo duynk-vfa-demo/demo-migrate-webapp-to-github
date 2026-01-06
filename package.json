@@ -1,0 +1,31 @@
+{
+  "name": "demo-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sample React 15 + Framework7 web app for a Git mirror rehearsal. No real application code.",
+  "scripts": {
+    "build:dev": "webpack --config webpack.config.dev.js",
+    "build:stg": "webpack --config webpack.config.stg.js",
+    "build:prod": "webpack --config webpack.config.prod.js"
+  },
+  "dependencies": {
+    "axios": "1.14.0",
+    "framework7": "1.6.5",
+    "framework7-react": "0.9.3-2",
+    "moment": "2.30.1",
+    "react": "15.7.0",
+    "react-dom": "15.7.0",
+    "recharts": "1.8.5"
+  },
+  "devDependencies": {
+    "@babel/core": "7.26.0",
+    "@babel/preset-env": "7.26.0",
+    "@babel/preset-react": "7.26.3",
+    "babel-loader": "9.2.1",
+    "webpack": "5.97.1",
+    "webpack-cli": "5.1.4"
+  },
+  "babel": {
+    "presets": ["@babel/preset-env", "@babel/preset-react"]
+  }
+}
