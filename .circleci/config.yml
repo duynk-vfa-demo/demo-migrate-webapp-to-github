@@ -1,0 +1,46 @@
+version: 2.1
+# FAKE pipeline for a mirror rehearsal. Same shape as the real web app: build -> test -> hold (approval) -> deploy,
+# every job only on the 9 deploy branches, so feature / PR branches run nothing. Every step is an echo: nothing is built or deployed.
+executors:
+  tiny:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+jobs:
+  build:
+    executor: tiny
+    steps:
+      - checkout
+      - run: echo "copy common/constants/<region>/Env_<stage>.jsx and webpack.config.<stage>.js for $CIRCLE_BRANCH (fake)"
+      - run: echo "npm ci && webpack (fake, nothing is built)"
+  test:
+    executor: tiny
+    steps:
+      - run: echo "test (fake)"
+  deploy:
+    executor: tiny
+    steps:
+      - run: echo "deploy $CIRCLE_BRANCH (fake, nothing is deployed)"
+workflows:
+  build-test-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: [develop, staging, staging-eu, staging-sg, staging-in, production, production-eu, production-sg, production-in]
+      - test:
+          requires: [build]
+          filters:
+            branches:
+              only: [develop, staging, staging-eu, staging-sg, staging-in, production, production-eu, production-sg, production-in]
+      - hold:
+          type: approval
+          requires: [test]
+          filters:
+            branches:
+              only: [develop, staging, staging-eu, staging-sg, staging-in, production, production-eu, production-sg, production-in]
+      - deploy:
+          requires: [hold]
+          filters:
+            branches:
+              only: [develop, staging, staging-eu, staging-sg, staging-in, production, production-eu, production-sg, production-in]
